@@ -1,25 +1,66 @@
-async function fetchRegistry() {
-    const sheetId = "1q6nR6up43Ts0hJC3zh0Kic7rLzuF7Vlj1Nprlq4Plbo";
-    const sheetName = "Wedding Registry";
-    const url = `https://docs.google.com/spreadsheets/d/1q6nR6up43Ts0hJC3zh0Kic7rLzuF7Vlj1Nprlq4Plbo/edit?gid=0#gid=0`;
-    
-    try {
-        const response = await fetch(url);
-        const text = await response.text();
-        const json = JSON.parse(text.substring(47, text.length - 2));
-        
-        let itemsHtml = "<ul>";
-        json.table.rows.forEach(row => {
-            const item = row.c[0] ? row.c[0].v : "Unknown Item";
-            const link = row.c[1] ? `<a href='${row.c[1].v}' target='_blank'>Buy</a>` : "";
-            itemsHtml += `<li>${item} ${link}</li>`;
-        });
-        itemsHtml += "</ul>";
-        
-        document.getElementById("registry").innerHTML = itemsHtml;
-    } catch (error) {
-        document.getElementById("registry").innerHTML = "Error loading registry.";
-    }
+const registryItems = [
+  { id: 1, item: "Toaster", price: "$30", link: "https://example.com/toaster" },
+  { id: 2, item: "Dinner Set", price: "$50", link: "https://example.com/dinnerset" },
+  { id: 3, item: "Blender", price: "$40", link: "https://example.com/blender" }
+];
+
+function renderRegistry() {
+  const tableBody = document.querySelector("#registry-table tbody");
+  tableBody.innerHTML = "";
+
+  registryItems.forEach(item => {
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td>${item.item}</td>
+      <td>${item.price}</td>
+      <td><a href="${item.link}" target="_blank">View</a></td>
+      <td>
+        <button class="claim-btn" data-id="${item.id}">Claim</button>
+        <div class="claim-form" id="form-${item.id}" style="display:none; margin-top:10px;">
+          <input type="text" placeholder="Your name" id="name-${item.id}" required />
+          <button class="submit-claim" data-id="${item.id}">Claim Item</button>
+        </div>
+      </td>
+    `;
+
+    tableBody.appendChild(row);
+  });
+
+  document.querySelectorAll(".claim-btn").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      const id = btn.dataset.id;
+      document.getElementById(`form-${id}`).style.display = "block";
+    });
+  });
+
+  document.querySelectorAll(".submit-claim").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      const id = btn.dataset.id;
+      const nameInput = document.getElementById(`name-${id}`);
+      const userName = nameInput.value.trim();
+      const itemName = registryItems.find(i => i.id == id).item;
+
+      if (userName === "") {
+        alert("Please enter your name.");
+        return;
+      }
+
+      emailjs.init("XazxbhZhQ61_TY0Mb");
+
+      emailjs.send("service_fdjfdno", "template_8jrv9lc", {
+        item: itemName,
+        name: userName,
+        to_email: "tperm14@gmail.com"
+      }).then(() => {
+        alert(`Thank you, ${userName}! You claimed "${itemName}".`);
+        document.getElementById(`form-${id}`).style.display = "none";
+      }, (error) => {
+        console.error("Failed to send email:", error);
+        alert("Something went wrong. Please try again.");
+      });
+    });
+  });
 }
 
-document.addEventListener("DOMContentLoaded", fetchRegistry);
+document.addEventListener("DOMContentLoaded", renderRegistry);

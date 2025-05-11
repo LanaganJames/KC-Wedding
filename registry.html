@@ -1,27 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KC & Ishmel's Wedding Registry</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KC & Ishmel's Wedding Registry</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 </head>
 <body>
-    <header>
-        <nav>
-            <ul class="links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="registry.html">Registry</a></li>
-            </ul>
-        </nav>
-    </header>
-    
-    <main>
-        <h1>KC & Ishmel</h1>
-        <h2>Registry</h2>
-        <div id="registry"></div>
-    </main>
+<section class="logo">
+  <header>
+    <nav>
+      <ul class="links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="registry.html">Registry</a></li>
+      </ul>
+    </nav>
+  </header>
 
-    <script src="registry.js"></script>
+<main>
+  <h1>KC & Ishmel</h1>
+  <h2>Registry</h2>
+
+  <table id="registry-table" border="1">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Price</th>
+        <th>Link</th>
+        <th>Claim</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Populated by JS -->
+    </tbody>
+  </table>
+</main>
+
+  <script src="registry.js"></script>
+  <script>
+  (function(){
+    emailjs.init("tperm14@gmail.com"); // Replace with your EmailJS user ID
+  })();
+ </script>
+</section>
 </body>
 </html>
