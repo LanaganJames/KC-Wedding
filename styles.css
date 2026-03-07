@@ -13,7 +13,7 @@ body {
     background-size: 100% auto, 100% auto;
     background-color: #ffffff;
 
-    min-height: 100vh;
+    min-height: 80vh;
 }
 
 /* === Header Navigation === */
@@ -180,5 +180,6 @@ p {
         gap:20px;
         font-size:0.9rem;
     }
+
 
 }
