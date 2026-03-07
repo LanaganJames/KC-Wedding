@@ -3,8 +3,22 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #ffffff;
+    height: 120em;
     color: #333333;
+
+    /* two background images */
+    background-image: url('Background1.JPG'), url('Background2.JPG');
+    
+    /* top image top, bottom image bottom */
+    background-position: top center, bottom center;
+
+    /* prevent repeating */
+    background-repeat: no-repeat, no-repeat;
+
+    /* scale images to screen width */
+    background-size: 100% auto, 100% auto;
+
+    background-color: #ffffff;
 }
 
 header {
@@ -13,7 +27,7 @@ header {
     left: 0;
     padding: 25px 10px;
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.9); /* slight background for contrast */
+    background-color: rgba(255, 255, 255, 0.471); /* slight background for contrast */
 }
 
 nav ul {
@@ -40,18 +54,37 @@ nav ul li a:hover {
 }
 
 /* === Index Page Styling === */
-.logo {
+/*.logo {
     width: 100%;
-    height: 150vw;
+    height: 50vw;
     display: flex;
     flex-direction: column;
     align-items: center;
     color: black;
     text-align: center;
     background-image: url('background.jpg');
-    background-size: cover;
+    background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
+}
+*/
+#RSVP {
+    margin-top: 20px;
+    font-size: 24px;
+    color: #4a3b00;              /* dark sunflower center color */
+    background-color: #f7d54a;   /* sunflower yellow */
+    border: 3px solid #d4a017;   /* darker yellow border */
+    padding: 15px 40px;
+    border-radius: 30px;         /* soft rounded button */
+    font-family: "Georgia", serif;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 3px 3px 8px rgba(0,0,0,0.2);
+}
+
+#RSVP:hover {
+    background-color: #ffd84d;
+    transform: scale(1.05);
 }
 
 .logo h1, .logo h2, .logo p {
@@ -60,6 +93,7 @@ nav ul li a:hover {
 
 main {
     margin-top: 200px;
+    margin-bottom: 200px;
     padding: 20px;
     text-align: center;
 }

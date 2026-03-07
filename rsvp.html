@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RSVP | KC & Ishmel's Wedding</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+</head>
+<body>
+  <section class="logo">
+    <header>
+      <nav>
+        <ul class="links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="registry.html">Registry</a></li>
+          <li><a href="rsvp.html">RSVP</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <h1>RSVP</h1>
+      <p><strong>Date:</strong> May 24, 2026</p>
+      <p><strong>Time:</strong> 4:00 PM</p>
+      <p><strong>Location:</strong> Maryville, Tennessee</p>
+
+      <form id="rsvp-form" style="margin-top: 20px;">
+        <input type="text" name="guest_name" id="guest_name" placeholder="Your Name" required /><br><br>
+
+        <label>
+          <input type="radio" name="attendance" value="yes" required />
+          Yes, I will attend
+        </label><br>
+        <label>
+          <input type="radio" name="attendance" value="no" />
+          No, I can't attend
+        </label><br><br>
+
+        <div id="dietary-section" style="display: none;">
+          <p>Do you have any dietary restrictions?</p>
+          <label><input type="checkbox" name="diet" value="None" /> None</label><br>
+          <label><input type="checkbox" name="diet" value="Vegetarian" /> Vegetarian</label><br>
+          <label><input type="checkbox" name="diet" value="Vegan" /> Vegan</label><br>
+          <label><input type="checkbox" name="diet" value="Gluten Free" /> Gluten Free</label><br>
+          <label>
+            <input type="checkbox" name="diet" value="Other" id="other-check" />
+            Other:
+            <input type="text" name="other_diet" id="other-diet-input" placeholder="Please specify" style="margin-left: 10px;" />
+          </label><br><br>
+        </div>
+
+        <button type="submit">Submit RSVP</button>
+      </form>
+    </main>
+  </section>
+
+  <script>
+    emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your actual public key
+
+    const attendanceRadios = document.getElementsByName('attendance');
+    const dietarySection = document.getElementById('dietary-section');
+
+    attendanceRadios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        if (radio.value === 'yes') {
+          dietarySection.style.display = 'block';
+        } else {
+          dietarySection.style.display = 'none';
+        }
+      });
+    });
+
+    document.getElementById("rsvp-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById("guest_name").value;
+      const attendance = [...attendanceRadios].find(r => r.checked)?.value;
+
+      const diets = [...document.querySelectorAll('input[name="diet"]:checked')].map(cb => cb.value);
+      const otherDiet = document.getElementById("other-diet-input").value.trim();
+      if (diets.includes("Other") && otherDiet) diets.push(`Other: ${otherDiet}`);
+
+      const dietaryString = attendance === "yes" && diets.length ? diets.join(", ") : "N/A";
+
+      emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+        name: name,
+        attending: attendance === "yes" ? "Yes" : "No",
+        dietary: dietaryString,
+        to_email: "tperm14@gmail.com"
+      }).then(() => {
+        alert("Thank you for your RSVP!");
+        document.getElementById("rsvp-form").reset();
+        dietarySection.style.display = "none";
+      }).catch(error => {
+        console.error("Failed to send:", error);
+        alert("There was an error sending your RSVP. Please try again.");
+      });
+    });
+  </script>
+</body>
+</html>
